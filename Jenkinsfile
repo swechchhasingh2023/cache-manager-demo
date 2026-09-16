@@ -39,7 +39,24 @@ pipeline {
         }
         stage('API Health Check') {
             steps {
-                sh 'curl --fail http://localhost:8082/health'
+                sh '''
+                    echo "Waiting for backend to become ready..."
+
+                    for i in {1..30}; do
+                        if curl --fail http://localhost:8082/health; then
+                            echo ""
+                            echo "Backend is healthy!"
+                            exit 0
+                        fi
+
+                        echo "Backend not ready yet. Waiting 2 seconds..."
+                        sleep 2
+                    done
+
+                    echo "Backend failed to become healthy."
+                    docker compose logs backend
+                    exit 1
+                '''
             }
         }
     }
