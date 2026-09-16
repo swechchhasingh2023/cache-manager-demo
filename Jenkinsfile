@@ -37,5 +37,10 @@ pipeline {
                 }
             }
         }
+        stage('API Health Check') {
+            steps {
+                sh 'curl --fail http://localhost:8082/health'
+            }
+        }
     }
 }
