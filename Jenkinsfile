@@ -27,7 +27,14 @@ pipeline {
 
         stage('Docker Compose Up') {
             steps {
-                sh 'docker compose up -d'
+                withCredentials([
+                    string(
+                        credentialsId: 'postgres-password',
+                        variable: 'SPRING_DATASOURCE_PASSWORD'
+                    )
+                ]) {
+                    sh 'docker compose up -d'
+                }
             }
         }
     }
