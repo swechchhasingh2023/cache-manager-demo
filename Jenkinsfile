@@ -6,7 +6,14 @@ pipeline {
         stage('Backend Test') {
             steps {
                 dir('backend/cache-manager-backend') {
-                    sh 'mvn test'
+                    withCredentials([
+                        string(
+                            credentialsId: 'postgres-password',
+                            variable: 'SPRING_DATASOURCE_PASSWORD'
+                        )
+                    ]) {
+                        sh 'mvn test'
+                    }
                 }
             }
         }
