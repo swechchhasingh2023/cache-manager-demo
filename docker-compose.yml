@@ -6,10 +6,10 @@ services:
     container_name: cache-manager-backend
     ports:
       - "8080:8080"
-    env_file:
-      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/cache_demo
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
