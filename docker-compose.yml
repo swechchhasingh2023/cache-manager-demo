@@ -1,0 +1,23 @@
+services:
+
+  backend:
+    build:
+      context: ./backend/cache-manager-backend
+    container_name: cache-manager-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/cache_demo
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build:
+      context: ./frontend/cache-manager-frontend
+    container_name: cache-manager-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
